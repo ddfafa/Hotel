@@ -1,0 +1,6 @@
+.git
+.vs
+packages
+.gitattributes
+Hotel/obj
+Hotel/bin
