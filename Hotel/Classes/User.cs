@@ -9,18 +9,18 @@ namespace Hotel
     internal class User
     {
        
-        public string Login { get; set; }   
+        public string Login { get; set; }
 
         public string Password { get; set; }
 
-        public UserGroup UserGroup { get; set; } = UserGroup.Guest;
+        public Role Role { get; set; }
+
         public override bool Equals(object obj)
         {
             if (obj is User otherUser)
             {
                 return Login == otherUser.Login &&
-                       Password == otherUser.Password &&
-                       UserGroup == otherUser.UserGroup;
+                       Password == otherUser.Password;
             }
 
             return false;

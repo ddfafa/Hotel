@@ -7,11 +7,12 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
     <Grid>
-        <DataGrid Name="DataView" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="DataView_SelectionChanged" Height="212" VerticalAlignment="Top"/>
+        <DataGrid Name="DataView" CellEditEnding="EditDataGrid" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="DataView_SelectionChanged" Height="212" VerticalAlignment="Top"/>
         <Button Content="поиск" HorizontalAlignment="Left" Margin="162,296,0,0" VerticalAlignment="Top" Click="Button_Click_2" />
         <Button Content="фильтрация&#xD;&#xA;" HorizontalAlignment="Left" Margin="472,243,0,0" VerticalAlignment="Top" Height="20" Click="Button_Click"/>
         <Button Content="сортировка&#xA;" HorizontalAlignment="Left" Margin="474,286,0,0" VerticalAlignment="Top" Height="20" Click="Button_Click_1"/>
         <TextBox HorizontalAlignment="Left" Margin="120,254,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <Button Content="Сохранить" HorizontalAlignment="Left" Margin="472,328,0,0" VerticalAlignment="Top" Click="Button_Click_3" Width="68"/>
+        <Button Content="Обновление" HorizontalAlignment="Left" Margin="474,367,0,0" VerticalAlignment="Top" Click="Button_Click_4"/>
     </Grid>
 </Window>

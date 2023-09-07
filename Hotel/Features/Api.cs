@@ -10,32 +10,30 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Data;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Hotel.Features
 {
     internal class Api
     {
+        public static User CurrentUser { get; set; } // Это пользователь, который зашел в систему
         public static string PathToFolder { get; } = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        
-        public static bool LoginToSystem(string login, string password)
-        {
-            MessageBox.Show($"Login: {login}\nPassword: {password}");
-            return true;
-        }
 
-        public static bool RegistrationToSystem(string login, string password)
+        public static void RegistrationToSystem(object sender, string login, string password)
         {
-            User user = new User()
+            // Сделать проверку, что пользователь уже сущесвует в файле
+            // Если пользователь существует, то выкидываем ошибку MessageBox.Show("Вы уже зарегестрированы");
+            CurrentUser = new User()
             {
                 Login = login,
                 Password = password,
-                UserGroup = UserGroup.Guest
+                Role = new Role()
             };
 
+            // Добавлять пользователя в файл, если его не существует
+            // Показываеть MessageBox.Show("Вы были зарегестрированы и вошли в систему с обычными правами.");
+            // Произвести вход в систему...
             List<User> users = DeserializeUsers<User>("Users.txt");
-             
-            if (users.Contains(user))
+            if (users.Contains(CurrentUser))
             {
                 MessageBox.Show("Этот пользователь существует");
                 Hotel.Window1 newform = new Hotel.Window1();
@@ -45,8 +43,39 @@ namespace Hotel.Features
             {
                 MessageBox.Show("Этот пользователь не существует");
             }
+        }
 
-            return true;
+        public static void LoginToSystem(object sender, string login, string password)
+        {
+            List<User> users = DeserializeUsers<User>("Users.txt");
+
+            CurrentUser = new User();
+            foreach(User user in users)
+            {
+                if (user.Login == login)
+                {
+                    if(user.Password == password)
+                    {
+                        CurrentUser = user;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Пароль неверный.");
+                    }
+                }
+            }
+            // Как сделать проверку, если мы полностью прошли список, а нашего логина нет в нем???
+
+            // Просто вход без надписи
+            if (users.Contains(CurrentUser))
+            {
+                Hotel.Window1 newform = new Hotel.Window1();
+                newform.Show();
+            }
+            else
+            {
+                MessageBox.Show("Этот пользователь не существует");
+            }
         }
 
         public static string CheckDataBase(string txt)
@@ -59,7 +88,7 @@ namespace Hotel.Features
 
             path = Path.Combine(path, txt);
             if (!File.Exists(path))
-            {
+            {              
                 File.Create(path);
             }
 
@@ -77,7 +106,6 @@ namespace Hotel.Features
         {
             string dbpath = CheckDataBase(txt);
             string json = File.ReadAllText(dbpath);
-
             return JsonConvert.DeserializeObject<List<T>>(json);
         }
     }
